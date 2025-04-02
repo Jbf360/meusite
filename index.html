@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validação de Exames</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 50px; }
+        input, button { margin: 10px; padding: 10px; font-size: 16px; }
+        #resultado { margin-top: 20px; font-size: 18px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h2>Validação de Exames</h2>
+    <p>Digite o código do seu exame para verificar sua autenticidade.</p>
+    <input type="text" id="tokenInput" placeholder="Digite o token">
+    <button onclick="validarToken()">Validar</button>
+    <p id="resultado"></p>
+
+    <script>
+        function validarToken() {
+            let token = document.getElementById("tokenInput").value.trim();
+            let url = "https://script.google.com/macros/s/AKfycbyTczxyc2HTgYXtalFFKUcTmS2JWF4D8bCry-ikWH8LLZf7XjPEpl70-fw5nCnSIg5CdQ/exec"; // Substitua pela URL da API
+
+            fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                let exame = data.find(item => item.token === token);
+                if (exame) {
+                    document.getElementById("resultado").innerHTML = `✅ Exame válido!<br>Paciente: ${exame.paciente}<br>Data: ${exame.data_exame}<br>Resultado: ${exame.resultado}`;
+                } else {
+                    document.getElementById("resultado").innerHTML = "❌ Token inválido!";
+                }
+            })
+            .catch(error => console.error("Erro na validação:", error));
+        }
+    </script>
+</body>
+</html>
